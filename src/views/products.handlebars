@@ -1,0 +1,42 @@
+ <div>
+    <p> Bienvenido {{user.full_name}}!!!</p>
+    <p>Rol: {{user.role}}</p>
+    <a href="/api/sessions/logout">Salir</a>
+</div>
+
+<div>
+    {{#if products}}
+        <!-- Código para mostrar la lista de productos -->
+        <h2>Lista de Productos: </h2>
+        <div id="products-add">
+            <ul>
+                {{#each products.docs}}
+                    <li>
+                        <a href="/products/{{this._id}}">{{this.title}}</a>
+                        <p>Descripción: {{this.description}}</p>
+                        <p>Precio: {{this.price}}</p>
+                        <p>Categoría: {{this.category}}</p>
+                        
+                    <form action="/api/carts" method="post">
+                        <input type="hidden" name="product" value="{{ this._id }}">
+                        <input type="hidden" name="quantity" value=1>
+                        <input type="submit" value="Agregar al Carrito">
+                    </form>
+                    <a href="/products/{{ this._id }}">Ver Carrito</a>
+                    </li>
+                {{/each}}
+            </ul>
+            <div>
+                {{#if products.hasPrevPage}}
+                    <a href="/products?page={{products.prevPage}}">Anterior</a>
+                {{/if}}
+                <span>Página {{products.page}} de {{products.totalPages}}</span>
+                {{#if products.hasNextPage}}
+                    <a href="/products?page={{products.nextPage}}">Siguiente</a>
+                {{/if}}
+            </div>
+        </div>
+    {{else}}
+        <p>No hay productos disponibles.</p>
+    {{/if}}
+</div>
